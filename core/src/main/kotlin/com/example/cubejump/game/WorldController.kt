@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Intersector
 import com.example.cubejump.game.objects.Level
 import com.example.cubejump.game.objects.PlayerState
+import com.example.cubejump.utils.PreferenceManager
 
 class WorldController(private val level: Level) {
 
@@ -55,6 +56,10 @@ class WorldController(private val level: Level) {
             // Level Complete! Move to next level
             // Gdx.app.log("Game", "Level Complete!")
             val nextLevel = if (level.currentLevel < 3) level.currentLevel + 1 else 1
+            
+            // Save progress if we reached a new level
+            PreferenceManager.saveHighLevel(nextLevel)
+            
             level.load(nextLevel)
         }
     }

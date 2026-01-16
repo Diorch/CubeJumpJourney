@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.example.cubejump.MainGame
 import com.example.cubejump.assets.AssetDescriptors
+import com.example.cubejump.utils.PreferenceManager
 import ktx.app.clearScreen
 import ktx.actors.onChange
 
@@ -34,6 +35,10 @@ class MainMenuScreen(game: MainGame) : BaseScreen(game) {
         title.setFontScale(2f)
         title.color = Color.GOLD
 
+        val highLevel = PreferenceManager.getHighLevel()
+        val scoreLabel = Label("Best Level Reached: $highLevel", skin)
+        scoreLabel.color = Color.WHITE
+
         val playButton = TextButton("PLAY GAME", skin)
         playButton.onChange { 
             game.addScreen(GameScreen(game))
@@ -47,7 +52,8 @@ class MainMenuScreen(game: MainGame) : BaseScreen(game) {
             Gdx.app.exit()
         }
 
-        table.add(title).padBottom(50f).row()
+        table.add(title).padBottom(20f).row()
+        table.add(scoreLabel).padBottom(40f).row()
         table.add(playButton).width(200f).height(60f).padBottom(20f).row()
         table.add(exitButton).width(200f).height(60f).row()
 

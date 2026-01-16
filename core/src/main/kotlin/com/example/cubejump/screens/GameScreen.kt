@@ -1,6 +1,7 @@
 package com.example.cubejump.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -35,6 +36,9 @@ class GameScreen(game: MainGame) : BaseScreen(game) {
         
         // Ensure InputProcessor is set to Stage so buttons work
         Gdx.input.inputProcessor = stage
+        
+        // Catch the Back key on Android
+        Gdx.input.setCatchKey(Input.Keys.BACK, true)
         
         setupUI()
     }
@@ -91,6 +95,12 @@ class GameScreen(game: MainGame) : BaseScreen(game) {
     }
 
     override fun render(delta: Float) {
+        // Handle Back Key
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            returnToMenu()
+            return
+        }
+
         // Update Logic
         controller.update(delta)
         
@@ -110,6 +120,13 @@ class GameScreen(game: MainGame) : BaseScreen(game) {
         // Render UI
         stage.act(delta)
         stage.draw()
+    }
+
+    private fun returnToMenu() {
+        game.addScreen(MainMenuScreen(game))
+        game.setScreen<MainMenuScreen>()
+        game.removeScreen<GameScreen>()
+        dispose()
     }
 
     override fun resize(width: Int, height: Int) {
